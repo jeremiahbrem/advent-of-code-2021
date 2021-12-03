@@ -6,8 +6,8 @@ export function parseInput(input: string): string[] {
   return nums;
 }
 
-export function partOne(commands: string[]): number {
-  const counts = calculateMostCommon(commands);
+export function partOne(binaryNums: string[]): number {
+  const counts = calculateMostCommon(binaryNums);
   let gamma = '';
   let epsilon = '';
 
@@ -29,8 +29,8 @@ type MostCommon = {
   one: number;
 }
 
-export function calculateMostCommon(commands: string[]): MostCommon[] {
-  const length = commands[0].length;
+export function calculateMostCommon(binaryNums: string[]): MostCommon[] {
+  const length = binaryNums[0].length;
 
 
   const counts = new Array(length).fill(0).map(x => ({
@@ -48,7 +48,7 @@ export function calculateMostCommon(commands: string[]): MostCommon[] {
     }
   }
 
-  commands.forEach(x => {
+  binaryNums.forEach(x => {
     parseNum(x);
   });
 
@@ -56,9 +56,9 @@ export function calculateMostCommon(commands: string[]): MostCommon[] {
 }
 
 
-export function partTwo(commands: string[]) {
-  let o2GenRating = [...commands];
-  let co2ScrubRating = [...commands];
+export function partTwo(binaryNums: string[]) {
+  let o2GenRating = [...binaryNums];
+  let co2ScrubRating = [...binaryNums];
 
   const filterO2Gen = (i: number, bit: string) => {
     o2GenRating = o2GenRating.length > 1
