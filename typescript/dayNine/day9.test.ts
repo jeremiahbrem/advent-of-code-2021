@@ -98,7 +98,7 @@ describe('day 9 part 1', () => {
   });
 });
 describe('day 9 part 2', () => {
-  it('counts total of output values', () => {
+  it('returns product of top three basin sizes', () => {
     expect(partTwo(sampleInput)).toBe(1134);
   });
 });
