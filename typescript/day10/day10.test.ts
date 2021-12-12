@@ -53,7 +53,7 @@ describe('getLineCompletion', () => {
     ])
   })
 });
-describe('day 9 part 1', () => {
+describe('day 10 part 1', () => {
   it('counts total error score', () => {
     expect(partOne(sampleInput)).toBe(26397);
   });
