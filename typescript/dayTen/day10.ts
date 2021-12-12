@@ -70,11 +70,15 @@ export function getLineCompletion(line: string[]): ClosingItem[] | undefined {
     }
   }
 
+  if (!valid) {
+    return;
+  }
+
   for (let i = opening.length - 1; i >= 0; i--) {
     closing.push(openingKey[opening[i]]);
   }
 
-  return valid ? closing : undefined;
+  return closing;
 }
 
 export function partOne(input: string): number {
