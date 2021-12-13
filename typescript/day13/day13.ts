@@ -188,6 +188,6 @@ export function partTwo(input: string): any[][] {
 
 if(require.main === module) {
   const input = readFileSync("inputs/day13.txt", { encoding: "ascii" });
-  // console.log(partOne(input));
+  console.log(partOne(input));
   console.log(partTwo(input));
 }

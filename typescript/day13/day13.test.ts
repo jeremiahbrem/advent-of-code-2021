@@ -2,8 +2,8 @@ import {
   foldRow,
   foldRows,
   foldLeft,
-  parseInput,
-  partOne
+  partOne,
+  partTwo
 } from './day13';
 
 const sample = `6,10
@@ -122,5 +122,18 @@ describe('foldLeft', () => {
 describe('day 13 part 1', () => {
   it('counts total visible dots', () => {
     expect(partOne(sample)).toBe(17);
+  });
+});
+describe('day 13 part 2', () => {
+  it('produces final folded paper', () => {
+    expect(partTwo(sample)).toEqual([
+      ['#','#','#','#','#'],
+      ['#','.','.','.','#'],
+      ['#','.','.','.','#'],
+      ['#','.','.','.','#'],
+      ['#','#','#','#','#'],
+      ['.','.','.','.','.'],
+      ['.','.','.','.','.'],
+    ]);
   });
 });
