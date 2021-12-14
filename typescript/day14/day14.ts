@@ -88,6 +88,6 @@ export function getValue(input: string, steps: number): number {
 
 if(require.main === module) {
   const input = readFileSync("inputs/day14.txt", { encoding: "ascii" });
-  console.log(getValue(input, 10));
+  console.log(getValue(input, 1));
   console.log(getValue(input, 40));
 }
