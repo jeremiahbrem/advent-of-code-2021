@@ -5,7 +5,23 @@ export function parseInput(input: string): Record<string, any> {
   const divider = lines.findIndex(x => !x);
   const dotStrings = lines.slice(0, divider);
   const folds = lines.slice(divider + 1);
-  const dots: Record<string, number>[] = [];
+
+  const { dots, maxX, maxY } = setupDots(dotStrings);
+
+  const paper = createInitialPaper(maxX, maxY);
+
+  dots.forEach(({x,y}) => paper[y][x] = true);
+  return { paper, folds };
+}
+
+type DotSetup = {
+  dots: { x: number, y: number}[];
+  maxX: number;
+  maxY: number;
+}
+
+const setupDots = (dotStrings: string[]): DotSetup => {
+  const dots: { x: number, y: number}[] = [];
   let maxX = 0;
   let maxY = 0;
 
@@ -20,8 +36,11 @@ export function parseInput(input: string): Record<string, any> {
       maxY = y + 1;
     }
     dots.push({x, y});
-  })
+  });
+  return { dots, maxX, maxY };
+};
 
+const createInitialPaper = (maxX: number, maxY: number): boolean[][] => {
   const paper: boolean[][] = [];
 
   for (let y = 0; y < maxY; y++) {
@@ -32,8 +51,7 @@ export function parseInput(input: string): Record<string, any> {
       paper[y][x] = false;
     }
   }
-  dots.forEach(({x,y}) => paper[y][x] = true);
-  return { paper, folds };
+  return paper;
 }
 
 type RowStat = {
