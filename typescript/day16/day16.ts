@@ -114,6 +114,25 @@ type OperatorPacket = {
   subPackets: string[];
 }
 
+const unPackWithNewIndex = (
+  substring: string,
+  index: number,
+  packet: OperatorPacket,
+  totalPackets: string[]
+): number => {
+
+  const current = substring.slice(index);
+  if (isLiteralValuePacket(current)) {
+    const currentLength = getLiteralValueLength(current);
+    addLiteralValueType(current, packet, totalPackets, currentLength);
+    return index + currentLength;
+
+  } else {
+    const { packetLength } = parseOperatorPacket({ packet: current, subPackets: [] }, totalPackets);
+    packet.subPackets.push(current.slice(0, packetLength));
+    return index + packetLength;
+  }
+}
 export function unPackLengthTypeSubPackets(
   substring: string,
   packet: OperatorPacket,
@@ -122,17 +141,7 @@ export function unPackLengthTypeSubPackets(
   let index = 0;
 
   while (packet.subPackets.join("").length < length) {
-    const current = substring.slice(index);
-    if (isLiteralValuePacket(current)) {
-      const currentLength = getLiteralValueLength(current);
-      addLiteralValueType(current, packet, totalPackets, currentLength);
-      index += currentLength;
-
-    } else {
-      const { packetLength } = parseOperatorPacket({ packet: current, subPackets: [] }, totalPackets);
-      packet.subPackets.push(current.slice(0, packetLength));
-      index += packetLength;
-    }
+    index = unPackWithNewIndex(substring, index, packet, totalPackets);
   }
 }
 
@@ -145,17 +154,7 @@ export function unPackCountTypeSubPackets(
   let index = 0;
 
   while (packet.subPackets.length < count) {
-    const current = substring.slice(index);
-    if (isLiteralValuePacket(current)) {
-      const currentLength = getLiteralValueLength(current);
-      addLiteralValueType(current, packet, totalPackets, currentLength);
-      index += currentLength;
-
-    } else {
-      const { packetLength } = parseOperatorPacket({ packet: current, subPackets: [] }, totalPackets);
-      packet.subPackets.push(current.slice(0, packetLength));
-      index += packetLength;
-    }
+    index = unPackWithNewIndex(substring, index, packet, totalPackets);
   }
 }
 
