@@ -126,19 +126,20 @@ type ExplodedPairResult = {
   leftStart: number;
   rightStart: number;
   pairNums: RegExpMatchArray;
+  explodedNumber: string;
 }
 
 const getExplodedPairResult = (
   explodingPair: ExplodingPair,
-  newNumber: string
+  number: string
 ): ExplodedPairResult => {
 
   const { start, end, pair } = explodingPair;
   const pairNums = pair.match(/[0-9][0-9]?/g)!;
-  newNumber = updateExplodingPair(explodingPair, newNumber);
   const leftStart = start - 1;
   const rightStart = end - (pair.length - 2);
-  return { leftStart, rightStart, pairNums };
+  const explodedNumber = updateExplodingPair(explodingPair, number);
+  return { leftStart, rightStart, pairNums, explodedNumber };
 }
 
 type LeftResult = {
@@ -181,8 +182,8 @@ const getUpdatedRightResult = (
 }
 
 export function explode(number: string, explodingPair: ExplodingPair): string {
-  let newNumber = updateExplodingPair(explodingPair, number);
-  const { leftStart, rightStart, pairNums } = getExplodedPairResult(explodingPair, newNumber);
+  const { leftStart, rightStart, pairNums, explodedNumber } = getExplodedPairResult(explodingPair, number);
+  let newNumber = explodedNumber;
 
   const { newRightStart, updatedNumber } = getUpdatedLeftResult(
     leftStart, newNumber, pairNums, rightStart
