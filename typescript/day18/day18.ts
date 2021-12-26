@@ -91,8 +91,7 @@ export function updateLeftNum(
   newNumber = number.slice(0, start);
   const newLeftNum = +num + +pairNums![0];
   newNumber += `${newLeftNum}`;
-  let newEnd = end;
-  newNumber += number.slice(newEnd);
+  newNumber += number.slice(end);
   return newNumber;
 }
 
@@ -106,8 +105,7 @@ export function updateRightNum(
   newNumber = number.slice(0, start);
   const newRightNum = +num + +pairNums![1];
   newNumber += `${newRightNum}`;
-  let newEnd = end;
-  newNumber += number.slice(newEnd);
+  newNumber += number.slice(end);
   return newNumber;
 }
 
