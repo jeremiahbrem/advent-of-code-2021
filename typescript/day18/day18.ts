@@ -124,27 +124,74 @@ export function updateExplodingPair(
   return newNumber;
 }
 
-export function explode(number: string, explodingPair: ExplodingPair): string {
-  let newNumber = number;
+type ExplodedPairResult = {
+  leftStart: number;
+  rightStart: number;
+  pairNums: RegExpMatchArray;
+}
+
+const getExplodedPairResult = (
+  explodingPair: ExplodingPair,
+  newNumber: string
+): ExplodedPairResult => {
+
   const { start, end, pair } = explodingPair;
   const pairNums = pair.match(/[0-9][0-9]?/g)!;
   newNumber = updateExplodingPair(explodingPair, newNumber);
-  const leftNum = getLeftNumber(start - 1, newNumber);
-  let rightStart = end - (pair.length - 2);
+  const leftStart = start - 1;
+  const rightStart = end - (pair.length - 2);
+  return { leftStart, rightStart, pairNums };
+}
 
+type LeftResult = {
+  newRightStart: number;
+  updatedNumber: string;
+}
+
+const getUpdatedLeftResult = (
+  leftStart: number,
+  number: string,
+  pairNums: RegExpMatchArray,
+  rightStart: number
+): LeftResult => {
+
+  let updatedNumber = number;
+  let newRightStart = rightStart;
+  const leftNum = getLeftNumber(leftStart, updatedNumber);
   if (leftNum) {
-    const result = updateLeftNum(leftNum, newNumber, pairNums);
-    if (result.length > newNumber.length) {
-      rightStart += 1;
+    const result = updateLeftNum(leftNum, updatedNumber, pairNums);
+    if (result.length > number.length) {
+      newRightStart += 1;
     }
-    newNumber = result;
+    updatedNumber = result;
   }
+  return { newRightStart, updatedNumber };
+}
 
-  const rightNum = getRightNumber(rightStart, newNumber);
+const getUpdatedRightResult = (
+  rightStart: number,
+  number: string,
+  pairNums: RegExpMatchArray
+): string => {
+
+  let updatedNumber = number;
+  const rightNum = getRightNumber(rightStart, number);
   if (rightNum) {
-    newNumber = updateRightNum(rightNum, newNumber, pairNums);
+    updatedNumber = updateRightNum(rightNum, number, pairNums);
   }
-  return newNumber;
+  return updatedNumber;
+}
+
+export function explode(number: string, explodingPair: ExplodingPair): string {
+  let newNumber = updateExplodingPair(explodingPair, number);
+  const { leftStart, rightStart, pairNums } = getExplodedPairResult(explodingPair, newNumber);
+
+  const { newRightStart, updatedNumber } = getUpdatedLeftResult(
+    leftStart, newNumber, pairNums, rightStart
+  );
+
+  const newUpdatedNumber = getUpdatedRightResult(newRightStart, updatedNumber, pairNums);
+  return newUpdatedNumber;
 }
 
 export function split(number: string, splitNum: SplittingNum): string {
